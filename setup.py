@@ -16,7 +16,7 @@ setuptools.setup(
     version="0.0.0",
     author="Maxwell Huang-Hobbs",
     author_email="mhuan13+pypy@gmail.com",
-    description="Runs a command and reports the result back to a notion collections",
+    description="Runs a command and reports the result back to a notion collection",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/adjective-object/notion-log-exec",
