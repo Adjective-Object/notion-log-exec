@@ -28,7 +28,7 @@ def load_config_file(config_json_path):
         return (
             client,
             client.get_collection_view(config["sync_root"]),
-            config["job_title"],
+            config["task_name"] if "task_name" in config else None,
         )
 
 
@@ -86,7 +86,7 @@ def run_task(command_args):
 
 def create_job_row(collection, name):
     new_row = collection.add_row()
-    new_row.title = name
+    new_row.set_property("Name", name)
     return new_row
 
 
@@ -105,6 +105,14 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--task_name",
+        "-n",
+        metavar="task_name",
+        type=str,
+        help="The task name (overrides config.json)",
+    )
+
+    parser.add_argument(
         "--log_failure_only",
         dest="log_failure_only",
         action="store_true",
@@ -120,6 +128,12 @@ def main():
     args = parse_args()
     client, root_view, job_title = load_config_file(args.config)
 
+    if job_title is None:
+        if args.task_name == None:
+            sys.exit("No task_name set in CLI argument or config file")
+        else:
+            job_title = args.task_name
+
     rows = root_view.collection.get_rows()
     matching_rows = [row for row in rows if row.title == job_title]
     rows_to_update = (
@@ -129,7 +143,7 @@ def main():
     )
 
     start_time = datetime.datetime.now()
-    for row in matching_rows:
+    for row in rows_to_update:
         update_row_field(row, "Status", "Running")
         update_row_field(row, "Last Run", notion.collection.NotionDate(start_time))
         update_row_field(row, "Runtime", "")
@@ -140,16 +154,16 @@ def main():
     elapsed = end_time - start_time
     elapsed_time_str = "{0:.2f}s".format(elapsed.total_seconds())
 
-    for row in matching_rows:
+    for row in rows_to_update:
         update_row_field(row, "Status", "Success" if exitcode == 0 else "Failed")
         update_row_field(row, "Runtime", elapsed_time_str)
-        if not args.log_failure_only:
+        if (not args.log_failure_only) or exitcode == 1:
             append_log_to_row_body(row, start_time, args.command_args, output)
 
     any_failed = any(
         (any_row_field(row, "Status", lambda x: x == "Failed") for row in rows)
     )
-    requested_icon = u"❌" if any_failed else u"✅"
+    requested_icon = u"❌" if any_failed else u"👍"
     current_icon = root_view.collection.get("icon")
     if current_icon != requested_icon:
         current_icon = root_view.collection.set("icon", requested_icon)
