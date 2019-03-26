@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: notion-log-exec
+Version: 0.0.0
+Summary: Runs a command and reports the result back to a notion collections
+Home-page: https://github.com/adjective-object/notion-log-exec
+Author: Maxwell Huang-Hobbs
+Author-email: mhuan13+pypy@gmail.com
+License: UNKNOWN
+Description: # notion-log-exec
+        
+        Run a command and report the result back to notion
+        
+        ```
+        usage: notion-log-exec [--config config] [--log_failure_only]  [command_args [command_args ...]]
+        
+        
+        Runs a command and reports the result back to a collection row on Notion
+        
+        positional arguments:
+          command_args
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          --config config, -c config
+                                Path to a config file
+          --log_failure_only    Append an entry to the log only when the command fails
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown

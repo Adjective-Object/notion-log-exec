@@ -1,0 +1,10 @@
+README.md
+setup.py
+notion_log_exec/__init__.py
+notion_log_exec/__main__.py
+notion_log_exec.egg-info/PKG-INFO
+notion_log_exec.egg-info/SOURCES.txt
+notion_log_exec.egg-info/dependency_links.txt
+notion_log_exec.egg-info/entry_points.txt
+notion_log_exec.egg-info/requires.txt
+notion_log_exec.egg-info/top_level.txt

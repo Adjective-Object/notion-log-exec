@@ -1,0 +1,3 @@
+[console_scripts]
+notion-log-exec = notion_log_exec.__main__:main
+
