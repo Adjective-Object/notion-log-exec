@@ -11,6 +11,6 @@ script: make travis
 deploy:
   skip_cleanup: true
   provider: script
-  script: ./scripts/deploy.sh
+  script: make travis-deploy
   on:
     branch: master
