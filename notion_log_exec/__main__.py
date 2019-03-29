@@ -136,11 +136,12 @@ def main():
 
     rows = root_view.collection.get_rows()
     matching_rows = [row for row in rows if row.title == job_title]
-    rows_to_update = (
-        [create_job_row(root_view.collection, job_title)]
-        if len(matching_rows) == 0
-        else matching_rows
-    )
+    if len(matching_rows) == 0:
+        rows_to_update = [create_job_row(root_view.collection, job_title)]
+        all_rows = rows + rows_to_update
+    else:
+        rows_to_update = matching_rows
+        all_rows = rows
 
     start_time = datetime.datetime.now()
     for row in rows_to_update:
@@ -161,7 +162,7 @@ def main():
             append_log_to_row_body(row, start_time, args.command_args, output)
 
     any_failed = any(
-        (any_row_field(row, "Status", lambda x: x == "Failed") for row in rows)
+        (any_row_field(row, "Status", lambda x: x == "Failed") for row in all_rows)
     )
     requested_icon = u"❌" if any_failed else u"👍"
     current_icon = root_view.collection.get("icon")
