@@ -10,7 +10,7 @@ twine = {editable = true,version = "*"}
 pipenv-to-requirements = {editable = true,version = "*"}
 
 [packages]
-notion = {editable = true,git = "https://github.com/evertheylen/notion-py.git"}
+notion= {editable = true,version = "*"}
 
 [requires]
 python_version = "3.7"
